@@ -30,9 +30,9 @@
       object-fit: cover;
     }
 
-    /* 🔥 SOMBRAS MÁS REALISTAS */
+    /* Fix de render */
     .stf__wrapper {
-      box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+      transform: translateZ(0);
     }
   </style>
 </head>
@@ -41,48 +41,40 @@
 
 <div id="book"></div>
 
-<!-- LIBRERÍA -->
 <script src="https://unpkg.com/page-flip/dist/js/page-flip.browser.min.js"></script>
 
-<!-- 🔊 SONIDO -->
-<audio id="flipSound" src="https://www.fesliyanstudios.com/play-mp3/387" preload="auto"></audio>
-
 <script>
-  const book = document.getElementById("book");
-  const sound = document.getElementById("flipSound");
+  window.addEventListener("load", () => {
 
-  const totalPages = 6;
+    const book = document.getElementById("book");
 
-  // 📕 CREAR PÁGINAS
-  for (let i = 1; i <= totalPages; i++) {
-    const page = document.createElement("div");
-    page.className = "page";
+    // 🔥 SOLO 6 PÁGINAS PARA PRUEBA
+    const totalPages = 6;
 
-    const img = document.createElement("img");
-    img.src = `page${i}.jpg`;
+    for (let i = 1; i <= totalPages; i++) {
+      const page = document.createElement("div");
+      page.className = "page";
 
-    page.appendChild(img);
-    book.appendChild(page);
-  }
+      const img = document.createElement("img");
+      img.src = `page${i}.jpg`;
 
-  // 📚 FLIPBOOK
-  const pageFlip = new St.PageFlip(book, {
-    width: 450,
-    height: 600,
-    size: "stretch",
-    maxShadowOpacity: 0.9,   // 🔥 sombras más fuertes
-    showCover: true,         // 📕 portada fija
-    mobileScrollSupport: false,
-    drawShadow: true,
-    flippingTime: 800
-  });
+      page.appendChild(img);
+      book.appendChild(page);
+    }
 
-  pageFlip.loadFromHTML(document.querySelectorAll(".page"));
+    const pageFlip = new St.PageFlip(book, {
+      width: 450,
+      height: 600,
+      size: "stretch",
+      maxShadowOpacity: 0.8,
+      showCover: true,
+      mobileScrollSupport: false,
+      drawShadow: true,
+      flippingTime: 800
+    });
 
-  // 🔊 SONIDO AL PASAR PÁGINA
-  pageFlip.on("flip", () => {
-    sound.currentTime = 0;
-    sound.play();
+    pageFlip.loadFromHTML(document.querySelectorAll(".page"));
+
   });
 </script>
 

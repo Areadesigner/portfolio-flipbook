@@ -7,13 +7,11 @@
     body {
       margin: 0;
       overflow: hidden;
-      font-family: Arial, sans-serif;
       background: #111;
     }
 
     .container {
       display: flex;
-      width: 600vw; /* 6 páginas */
       height: 100vh;
       transition: transform 0.6s ease-in-out;
     }
@@ -34,7 +32,7 @@
     .buttons {
       position: fixed;
       width: 100%;
-      top: 65%;
+      top: 40%;
       display: flex;
       justify-content: space-between;
       transform: translateY(-50%);
@@ -48,22 +46,11 @@
       cursor: pointer;
       font-size: 20px;
     }
-
-    button:hover {
-      background: rgba(255,255,255,0.2);
-    }
   </style>
 </head>
 <body>
 
-<div class="container" id="slider">
-  <div class="page"><img src="page1.jpg"></div>
-  <div class="page"><img src="page2.jpg"></div>
-  <div class="page"><img src="page3.jpg"></div>
-  <div class="page"><img src="page4.jpg"></div>
-  <div class="page"><img src="page5.jpg"></div>
-  <div class="page"><img src="page6.jpg"></div>
-</div>
+<div class="container" id="slider"></div>
 
 <div class="buttons">
   <button onclick="prev()">◀</button>
@@ -71,15 +58,32 @@
 </div>
 
 <script>
+  const totalPages = 6; // 🔥 CAMBIAS SOLO ESTO
   let index = 0;
+
   const slider = document.getElementById("slider");
+
+  // Crear páginas automáticamente
+  for (let i = 1; i <= totalPages; i++) {
+    const page = document.createElement("div");
+    page.className = "page";
+
+    const img = document.createElement("img");
+    img.src = `page${i}.jpg`;
+
+    page.appendChild(img);
+    slider.appendChild(page);
+  }
+
+  // Ajustar ancho automáticamente
+  slider.style.width = (totalPages * 100) + "vw";
 
   function updateSlide() {
     slider.style.transform = `translateX(-${index * 100}vw)`;
   }
 
   function next() {
-    if (index < 5) {
+    if (index < totalPages - 1) {
       index++;
       updateSlide();
     }

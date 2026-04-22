@@ -1,81 +1,96 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Ángel Rea Portfolio</title>
-
+  <title>Portfolio Flipbook</title>
   <style>
     body {
       margin: 0;
-      background: #0e0e0e;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
       overflow: hidden;
+      font-family: Arial, sans-serif;
+      background: #111;
     }
 
-    #book {
-      width: 900px;
-      height: 600px;
+    .container {
+      display: flex;
+      width: 600vw; /* 6 páginas */
+      height: 100vh;
+      transition: transform 0.6s ease-in-out;
     }
 
     .page {
-      background: white;
+      width: 100vw;
+      height: 100vh;
+      flex-shrink: 0;
     }
 
     .page img {
       width: 100%;
       height: 100%;
-      object-fit: cover;
+      object-fit: contain;
+      background: #000;
     }
 
-    /* Fix de render */
-    .stf__wrapper {
-      transform: translateZ(0);
+    .buttons {
+      position: fixed;
+      width: 100%;
+      top: 50%;
+      display: flex;
+      justify-content: space-between;
+      transform: translateY(-50%);
+    }
+
+    button {
+      background: rgba(0,0,0,0.5);
+      color: white;
+      border: none;
+      padding: 20px;
+      cursor: pointer;
+      font-size: 20px;
+    }
+
+    button:hover {
+      background: rgba(255,255,255,0.2);
     }
   </style>
 </head>
-
 <body>
 
-<div id="book"></div>
+<div class="container" id="slider">
+  <div class="page"><img src="page1.jpg"></div>
+  <div class="page"><img src="page2.jpg"></div>
+  <div class="page"><img src="page3.jpg"></div>
+  <div class="page"><img src="page4.jpg"></div>
+  <div class="page"><img src="page5.jpg"></div>
+  <div class="page"><img src="page6.jpg"></div>
+</div>
 
-<script src="https://unpkg.com/page-flip/dist/js/page-flip.browser.min.js"></script>
+<div class="buttons">
+  <button onclick="prev()">◀</button>
+  <button onclick="next()">▶</button>
+</div>
 
 <script>
-  window.addEventListener("load", () => {
+  let index = 0;
+  const slider = document.getElementById("slider");
 
-    const book = document.getElementById("book");
+  function updateSlide() {
+    slider.style.transform = `translateX(-${index * 100}vw)`;
+  }
 
-    // 🔥 SOLO 6 PÁGINAS PARA PRUEBA
-    const totalPages = 6;
-
-    for (let i = 1; i <= totalPages; i++) {
-      const page = document.createElement("div");
-      page.className = "page";
-
-      const img = document.createElement("img");
-      img.src = `page${i}.jpg`;
-
-      page.appendChild(img);
-      book.appendChild(page);
+  function next() {
+    if (index < 5) {
+      index++;
+      updateSlide();
     }
+  }
 
-    const pageFlip = new St.PageFlip(book, {
-      width: 450,
-      height: 600,
-      size: "stretch",
-      maxShadowOpacity: 0.8,
-      showCover: true,
-      mobileScrollSupport: false,
-      drawShadow: true,
-      flippingTime: 800
-    });
-
-    pageFlip.loadFromHTML(document.querySelectorAll(".page"));
-
-  });
+  function prev() {
+    if (index > 0) {
+      index--;
+      updateSlide();
+    }
+  }
 </script>
 
 </body>

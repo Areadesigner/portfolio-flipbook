@@ -1,100 +1,67 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Portfolio Flipbook</title>
-  <style>
-    body {
-      margin: 0;
-      overflow: hidden;
-      background: #111;
-    }
+<meta charset="UTF-8">
+<title>PDF Portfolio</title>
 
-    .container {
-      display: flex;
-      height: 100vh;
-      transition: transform 0.6s ease-in-out;
-    }
+<style>
+body {
+  margin: 0;
+  overflow: hidden;
+  background: #111;
+}
 
-    .page {
-      width: 100vw;
-      height: 100vh;
-      flex-shrink: 0;
-    }
+#viewerContainer {
+  width: 100vw;
+  height: 100vh;
+  overflow-x: scroll;
+  overflow-y: hidden;
+  white-space: nowrap;
+}
 
-    .page img {
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
-      background: #000;
-    }
+.page {
+  display: inline-block;
+  margin: 0;
+}
+</style>
 
-    .buttons {
-      position: fixed;
-      width: 100%;
-      top: 40%;
-      display: flex;
-      justify-content: space-between;
-      transform: translateY(-50%);
-    }
-
-    button {
-      background: rgba(0,0,0,0.5);
-      color: white;
-      border: none;
-      padding: 20px;
-      cursor: pointer;
-      font-size: 20px;
-    }
-  </style>
 </head>
 <body>
 
-<div class="container" id="slider"></div>
+<div id="viewerContainer"></div>
 
-<div class="buttons">
-  <button onclick="prev()">◀</button>
-  <button onclick="next()">▶</button>
-</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 
 <script>
-  const totalPages = 6; // 🔥 CAMBIAS SOLO ESTO
-  let index = 0;
+const url = "portfolio.pdf"; // tu PDF
 
-  const slider = document.getElementById("slider");
+const container = document.getElementById("viewerContainer");
 
-  // Crear páginas automáticamente
-  for (let i = 1; i <= totalPages; i++) {
-    const page = document.createElement("div");
-    page.className = "page";
+pdfjsLib.getDocument(url).promise.then(pdf => {
 
-    const img = document.createElement("img");
-    img.src = `page${i}.jpg`;
+  for (let i = 1; i <= pdf.numPages; i++) {
+    pdf.getPage(i).then(page => {
 
-    page.appendChild(img);
-    slider.appendChild(page);
+      const scale = 1.5;
+      const viewport = page.getViewport({ scale });
+
+      const canvas = document.createElement("canvas");
+      canvas.className = "page";
+      canvas.width = viewport.width;
+      canvas.height = viewport.height;
+
+      const context = canvas.getContext("2d");
+
+      page.render({
+        canvasContext: context,
+        viewport: viewport
+      });
+
+      container.appendChild(canvas);
+    });
   }
 
-  // Ajustar ancho automáticamente
-  slider.style.width = (totalPages * 100) + "vw";
-
-  function updateSlide() {
-    slider.style.transform = `translateX(-${index * 100}vw)`;
-  }
-
-  function next() {
-    if (index < totalPages - 1) {
-      index++;
-      updateSlide();
-    }
-  }
-
-  function prev() {
-    if (index > 0) {
-      index--;
-      updateSlide();
-    }
-  }
+});
 </script>
 
 </body>

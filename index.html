@@ -2,54 +2,55 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Portfolio Flipbook</title>
+<title>Flipbook Portfolio</title>
 
 <style>
 body {
   margin: 0;
-  overflow: hidden; /* 🔥 evita scroll libre */
+  overflow: hidden;
   background: #111;
 }
 
+/* SLIDER */
 .container {
   display: flex;
   height: 100vh;
-  width: 100vw;
   transition: transform 0.5s ease;
-  will-change: transform;
 }
 
 .page {
-  min-width: 100vw; /* 🔥 clave: bloquea múltiples páginas visibles */
+  flex: 0 0 100vw;
   height: 100vh;
-  flex-shrink: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .page img {
   width: 100%;
   height: 100%;
   object-fit: contain;
-  background: black;
 }
 
-/* BOTONES */
+/* FLECHAS */
 .buttons {
   position: fixed;
   width: 100%;
-  top: 45%;
+  top: 30%;
   display: flex;
   justify-content: space-between;
   transform: translateY(-50%);
   z-index: 10;
+  padding: 0 20px;
 }
 
 button {
   background: rgba(0,0,0,0.6);
   color: white;
   border: none;
-  padding: 18px 25px;
+  padding: 18px 22px;
   cursor: pointer;
-  font-size: 20px;
+  font-size: 22px;
   border-radius: 8px;
 }
 </style>
@@ -65,12 +66,13 @@ button {
 </div>
 
 <script>
-const totalPages = 6;
+
+const totalPages = 6; // 🔥 cámbialo a 50 cuando quieras
 let index = 0;
 
 const slider = document.getElementById("slider");
 
-// crear páginas
+/* CREAR PÁGINAS */
 for (let i = 1; i <= totalPages; i++) {
   const page = document.createElement("div");
   page.className = "page";
@@ -82,23 +84,26 @@ for (let i = 1; i <= totalPages; i++) {
   slider.appendChild(page);
 }
 
-function updateSlide() {
+/* MOVER */
+function update() {
   slider.style.transform = `translateX(-${index * 100}vw)`;
 }
 
+/* BOTONES */
 function next() {
   if (index < totalPages - 1) {
     index++;
-    updateSlide();
+    update();
   }
 }
 
 function prev() {
   if (index > 0) {
     index--;
-    updateSlide();
+    update();
   }
 }
+
 </script>
 
 </body>

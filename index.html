@@ -4,11 +4,19 @@
 <meta charset="UTF-8">
 <title>Flipbook Portfolio</title>
 
+<!-- 🔥 BLOQUEA ZOOM EN MÓVIL -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
 <style>
 body {
   margin: 0;
   overflow: hidden;
   background: #111;
+}
+
+/* 🔥 BLOQUEA GESTOS MULTITOUCH */
+html, body {
+  touch-action: none;
 }
 
 /* SLIDER */
@@ -32,7 +40,7 @@ body {
   object-fit: contain;
 }
 
-/* FLECHAS */
+/* BOTONES */
 .buttons {
   position: fixed;
   width: 100%;
@@ -67,7 +75,7 @@ button {
 
 <script>
 
-const totalPages = 6; // 🔥 cámbialo a 50 cuando quieras
+const totalPages = 6; // 🔥 cambia a 50 cuando quieras
 let index = 0;
 
 const slider = document.getElementById("slider");
@@ -103,6 +111,17 @@ function prev() {
     update();
   }
 }
+
+/* 🔥 BLOQUEO EXTRA DE ZOOM EN IPHONE */
+document.addEventListener('gesturestart', function (e) {
+  e.preventDefault();
+});
+
+document.addEventListener('touchmove', function (e) {
+  if (e.touches && e.touches.length > 1) {
+    e.preventDefault();
+  }
+}, { passive: false });
 
 </script>
 

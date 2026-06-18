@@ -75,7 +75,7 @@ button {
 
 <script>
 
-const totalPages = 6; // 🔥 cambia a 50 cuando quieras
+const totalPages = 10; // 🔥 cambia a 50 cuando quieras
 let index = 0;
 
 const slider = document.getElementById("slider");
@@ -86,7 +86,7 @@ for (let i = 1; i <= totalPages; i++) {
   page.className = "page";
 
   const img = document.createElement("img");
-  img.src = `page${i}.jpg`;
+  img.src = `AngelRea_Portfolio-${i}.jpg`;
 
   page.appendChild(img);
   slider.appendChild(page);
